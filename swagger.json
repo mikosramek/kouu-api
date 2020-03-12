@@ -1,0 +1,225 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "KOUU API",
+    "description": "An API to get KOUU users, lessons, and words."
+  },
+  "schemes": [
+    "https"
+  ],
+  "host": "localhost:3001",
+  "basePath": "/api/v1",
+  "paths": {
+    "/accounts/login": {
+      "post": {
+        "summary": "Login and create a session",
+        "description": "Returns user information and session key.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "authentication",
+            "required": true,
+            "description": "The username and password to login with.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A user's information",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "lesson": {
+                  "type": "number"
+                },
+                "points": {
+                  "type": "number"
+                },
+                "session_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Authentication not provided",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad login authentication",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/signup": {
+      "put": {
+        "summary": "Login and create a session",
+        "description": "Returns a session key if successful.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user account",
+            "required": true,
+            "description": "The user's data to create the account with",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The session key",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "session_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Authentication not provided",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User already exists",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lessons": {
+      "get": {
+        "summary": "Get general lesson data",
+        "description": "Returns a list of lessons that exist.",
+        "responses": {
+          "200": {
+            "description": "An array of lesson data.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "lesson_name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lessons/{lesson_id}": {
+      "get": {
+        "summary": "Get specific lesson data",
+        "description": "Returns the details of a specific lesson",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "lesson_id",
+            "required": true,
+            "description": "The is of the lesson being requested",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "authentication",
+            "required": true,
+            "description": "The username of the current user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of lesson data.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "lesson_name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User forbidden from specific lesson",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
